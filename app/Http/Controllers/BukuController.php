@@ -25,7 +25,6 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi data yang diterima
     $validatedData = $request->validate([
         'judul' => 'required|string|min:1',
         'penulis' => 'required|string|max:255',
@@ -34,10 +33,8 @@ class BukuController extends Controller
         'kategori_id' => 'required|exists:kategoris,id',
     ]);
 
-    // Menyimpan data ke dalam database
     $buku = Buku::create($validatedData);
 
-    // Mengembalikan respons dengan data buku yang baru dibuat
     return response()->json([
         'message' => 'Buku berhasil ditambahkan',
         'data' => $buku
@@ -59,7 +56,6 @@ class BukuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       // Validasi data yang diterima
        $validatedData = $request->validate([
         'judul' => 'sometimes|required|string|max:255',
         'penulis' => 'sometimes|required|string|max:255',
@@ -68,13 +64,10 @@ class BukuController extends Controller
         'kategori_id' => 'sometimes|required|exists:kategoris,id',
     ]);
 
-    // Mencari data buku berdasarkan ID
     $buku = Buku::findOrFail($id);
 
-    // Mengupdate data buku
     $buku->update($validatedData);
 
-    // Mengembalikan respons dengan data buku yang baru diupdate
     return response()->json([
         'message' => 'Buku berhasil diupdate',
         'data' => $buku
@@ -86,13 +79,10 @@ class BukuController extends Controller
      */
     public function destroy(string $id)
     {
-        // Mencari data buku berdasarkan ID
         $buku = Buku::findOrFail($id);
 
-        // Menghapus data buku
         $buku->delete();
 
-        // Mengembalikan respons bahwa buku telah dihapus
         return response()->json([
             'message' => 'Buku berhasil dihapus'
         ]);
